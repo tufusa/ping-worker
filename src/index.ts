@@ -5,6 +5,7 @@ import {
   InteractionType,
   InteractionResponseType,
   APIInteractionResponsePong,
+  APIInteractionResponseChannelMessageWithSource,
 } from "discord-api-types/v10";
 
 export type Bindings = {
@@ -28,6 +29,13 @@ app.post("/interactions", async (c) => {
   if (interaction.type == InteractionType.Ping) {
     return c.json<APIInteractionResponsePong>({
       type: InteractionResponseType.Pong,
+    });
+  } else {
+    return c.json<APIInteractionResponseChannelMessageWithSource>({
+      type: InteractionResponseType.ChannelMessageWithSource,
+      data: {
+        content: `hello.\n${JSON.stringify(interaction, null, "  ")}`,
+      },
     });
   }
 });
